@@ -6,7 +6,7 @@ const crypto= require("crypto")
 
 exports.register= async (req,res)=>{
     try {
-        const {name,email,password} = req.body;
+        const {name,email,password, profilepic} = req.body;
 
         let user = await usermodel.findOne({email});
         if(user){

@@ -24,7 +24,7 @@ const Login = () => {
         <form onSubmit={loginhandler} className='loginForm'>
         <Typography style={{padding:"2vmax"}} variant='h2' >Social Media Login</Typography>
             <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Enter your Email' required />
-            <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter Your Paasword' required />
+            <input type="password" autoComplete='true' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter Your Paasword' required />
           <Link to={"/forgot/password"} >
             <Typography>Forgot Password?</Typography>``
           </Link>

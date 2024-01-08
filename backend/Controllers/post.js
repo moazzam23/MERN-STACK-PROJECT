@@ -121,11 +121,11 @@ exports.getpostoffollowers= async (req,res)=>{
         const postnew = await post.find({
             users:{ $in: usernew.following}
 
-        })
+        }).populate("users likes comments.user")
 
       res.status(200).json({
         success:true,
-        postnew,
+        postnew:postnew.reverse(),
       })  
         
 

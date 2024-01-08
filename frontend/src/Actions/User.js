@@ -36,14 +36,64 @@ const {data}= await axios.get("/api/v1/myprofile")
 
 dispatch({
     type:"Loadusersuccess",
-    payload:data.user
+    payload:data.userdata
 })
 
 } catch (error) {
     dispatch({
         type:"Loaduserfailure",
-        payload:error,
+        payload:error.response.data.message,
     })
+}
+}
+
+
+export const postoffollowinguser=()=>async(dispatch)=>{
+try {
+
+
+    dispatch({
+        type:"postoffollowingRequest",
+
+    })
+
+    const {data}= await axios.get("/api/v1/posts")
+
+    dispatch({
+        type:"postoffollowingSuccess",
+        payload:data.postnew,
+    })
+
     
+} catch (error) {
+    dispatch({
+        type:"postoffollowingFaliure",
+        payload:error.response.data.message,
+    })
 }
 }
+
+export const Alluser=()=>async(dispatch)=>{
+    try {
+    
+    
+        dispatch({
+            type:"AlluserRequest",
+    
+        })
+    
+        const {data}= await axios.get("/api/v1/users")
+    
+        dispatch({
+            type:"AlluserSuccess",
+            payload:data.userdata,
+        })
+    
+        
+    } catch (error) {
+        dispatch({
+            type:"AlluserFailure",
+            payload:error.response.data.message,
+        })
+    }
+    }
