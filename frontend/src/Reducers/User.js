@@ -9,6 +9,9 @@ const Registerfailure = 'Registerfailure';
 const Loaduserrequest = 'Loaduserrequest';
 const Loadusersuccess = 'Loadusersuccess';
 const loaduserfailure = 'loaduserfailure';
+const Logoutuserrequest = 'Logoutuserrequest';
+const Logoutusersuccess = 'Logoutusersuccess';
+const Logoutuserfailure = 'Logoutuserfailure';
 const postoffollowingRequest = 'postoffollowingRequest';
 const postoffollowingSuccess = 'postoffollowingSuccess';
 const postoffollowingFailure = 'postoffollowingFailure';
@@ -72,7 +75,23 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.error = action.payload;
       state.isAuthenticated=false;
     });
-    builder.addCase(
+    
+//USER LOGOUT
+    builder
+    .addCase(Logoutuserrequest, (state) => {
+      state.loading = true;
+    })
+    .addCase(Logoutusersuccess, (state) => {
+      state.loading = false;
+      state.userdata = null;
+      state.isAuthenticated=false;
+    })
+    .addCase(Logoutuserfailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.isAuthenticated=true;
+    })
+    .addCase(
       clearerror, (state)=>{
         state.error=null;
   

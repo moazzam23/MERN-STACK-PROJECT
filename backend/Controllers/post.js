@@ -1,29 +1,34 @@
 const post = require("../Models/Post")
 const User = require("../Models/user")
+const cloudinary = require ("cloudinary")
 exports.createpost = async (req,res)=>{
 
     try {
+
+const cloud = await cloudinary.v2.uploader.upload(req.body.image,{folder:"posts"})
+
    const postdata={
     caption: req.body.caption,
     image:{
-        publicid:"hello",
-        url:"new"
+        public_id:cloud.public_id,
+        url:cloud.secure_url,
     },
     users:req.user._id
 
    };
    const newpostdata = await post.create(postdata)
    const user = await User.findById(req.user._id) 
-user.posts.push(newpostdata._id);
+user.posts.unshift(newpostdata._id);
 
 await user.save();
 
    res.status(201).json({
     success:true,
-    post:newpostdata,
+   message:"Post Created",
    })   
    
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             success:false,
             message:error.message,
@@ -75,8 +80,8 @@ else{
 exports.deletepost= async (req,res)=>{
 
     try {
-        
         const findpost = await post.findById(req.params.id);
+        console.log('Post ID:', req.params.id);
         if(!findpost){
             return res.status(404).json({
                 success:false,
@@ -84,13 +89,17 @@ exports.deletepost= async (req,res)=>{
             })
         }
 
-        if(findpost.users.toString() !== req.user._id.toString()){
+        if(findpost.users._id.toString() !== req.user._id.toString()){
             return res.status(401).json({
                 success:false,
                 message:"Unauthorized"
             });
         }
-await findpost.remove();
+
+        await cloudinary.v2.uploader.destroy(findpost.image.public_id)
+
+
+await findpost.deleteOne();
 
 const user = await User.findById(req.user._id);
 const index = await user.posts.indexOf(req.user._id)
@@ -104,6 +113,7 @@ res.status(200).json({
 
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             success:false,
             error:error.message
@@ -227,7 +237,7 @@ exports.createcomment= async (req,res)=>{
 exports.deletecomment = async (req,res)=>{
     try {
 
-        const posts = await post.findById(req.params.id);
+        const posts = await post.findById(req.params._id);
 
         if(!posts){
             return res.status(404).json({

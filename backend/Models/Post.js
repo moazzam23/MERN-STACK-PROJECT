@@ -5,7 +5,7 @@ const postschema= new mongoose.Schema({
 
     caption:String,
     image:{
-        publicid:String,
+        public_id:String,
         url:String,
     },
 

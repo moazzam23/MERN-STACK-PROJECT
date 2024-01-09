@@ -2,6 +2,7 @@ const usermodel = require("../Models/user");
 const Post= require("../Models/Post")
 const {sendemail}= require("../Middleware/SentEmail")
 const crypto= require("crypto")
+const cloudinary = require("cloudinary")
 
 
 exports.register= async (req,res)=>{
@@ -16,10 +17,11 @@ exports.register= async (req,res)=>{
             });
         }
 
-        user = await usermodel.create({name,email,password, profilepic:{
-            publicid:"sampleimage",
-            url:"smapleurl",
+        const cloud = await cloudinary.v2.uploader.upload(profilepic,{folder: "userpic",})
 
+        user = await usermodel.create({name,email,password, profilepic:{
+            public_id: cloud.public_id,
+            url:cloud.url,
         }})
 
 
@@ -35,6 +37,7 @@ exports.register= async (req,res)=>{
             token,
         })        
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success:false,
             message:error.message,
@@ -47,7 +50,7 @@ exports.login = async (req, res)=>{
     try {
         const {email,password}= req.body;
 
-        const user = await usermodel.findOne({email}).select("+password");
+        const user = await usermodel.findOne({email}).select("+password").populate("posts followers following");
         if(!user){
             return  res.status(420).json({
                 success:false,
@@ -276,7 +279,7 @@ exports.deleteuser = async(req,res)=>{
 exports.myprofile = async (req,res)=>{
     try {
         
-        const userdata= await usermodel.findById(req.user._id).populate("posts");
+        const userdata= await usermodel.findById(req.user._id).populate("posts followers following");
         res.status(200).json({
             success:true,
             userdata,
@@ -296,7 +299,7 @@ exports.myprofile = async (req,res)=>{
 exports.getuserprofile=async (req, res)=>{
     try {
 
-        const userdata = await usermodel.findById(req.user._id).populate("posts");
+        const userdata = await usermodel.findById(req.user._id).populate("posts followers following");
         
 
         if (!userdata) {
@@ -415,6 +418,32 @@ res.status(401).json({
         }) 
           
 
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:error.message,
+        })
+    }
+}
+
+exports.myposts=async (req, res)=>{
+    try {
+
+        const user = await usermodel.findById(req.user._id);
+        const posts=[];
+
+        for (let i = 0; i < user.posts.length; i++) {
+            const post = await Post.findById(user.posts[i]).populate("likes comments.user users");
+
+            posts.push(post)
+
+            
+        }
+        
+        res.status(200).json({
+            success:true,
+            posts,
+        })
     } catch (error) {
         res.status(500).json({
             success:false,

@@ -47,7 +47,6 @@ dispatch({
 }
 }
 
-
 export const postoffollowinguser=()=>async(dispatch)=>{
 try {
 
@@ -68,6 +67,31 @@ try {
 } catch (error) {
     dispatch({
         type:"postoffollowingFaliure",
+        payload:error.response.data.message,
+    })
+}
+}
+
+export const GetMyposts=()=>async(dispatch)=>{
+try {
+
+
+    dispatch({
+        type:"MypostsRequest",
+
+    })
+
+    const {data}= await axios.get("/api/v1/myposts")
+
+    dispatch({
+        type:"MypostsSuccess",
+        payload:data.posts,
+    })
+
+    
+} catch (error) {
+    dispatch({
+        type:"MypostsFaliure",
         payload:error.response.data.message,
     })
 }
@@ -96,4 +120,51 @@ export const Alluser=()=>async(dispatch)=>{
             payload:error.response.data.message,
         })
     }
+}
+
+export const Logoutuser=()=> async(dispatch)=>{
+    try {
+        
+    dispatch({
+        type:"Logoutuserrequest"
+    })
+    
+ await axios.get("/api/v1/logout")
+    
+    dispatch({
+        type:"Logoutuserrsuccess",
+    })
+    
+    } catch (error) {
+        dispatch({
+            type:"Logoutuserfailure",
+            payload:error,
+        })
+        
     }
+    }
+
+    export const Registeruser=(name,email,password,profilepic)=> async(dispatch)=>{
+        try {
+            
+        dispatch({
+            type:"RegisterRequest"
+        })
+        
+        const {data}= await axios.post("/api/v1/register",{name,email,password,profilepic},{ headers:{
+        "Content-Type":"application/json",
+        }})
+        
+        dispatch({
+            type:"Registersuccess",
+            payload:data.user,
+        })
+        
+        } catch (error) {
+            dispatch({
+                type:"Registerfailure",
+                payload: error.response.data.message,
+            })
+            
+        }
+        }    

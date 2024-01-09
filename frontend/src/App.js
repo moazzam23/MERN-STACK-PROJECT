@@ -6,6 +6,9 @@ import Login from './Components/Login/Login';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoadUser } from './Actions/User';
 import Home from './Components/Home/Home';
+import Account from './Components/Acounts/Account';
+import Newpost from './Components/Newpost/Newpost';
+import Register from './Components/Register/Register';
 
 
 function App() {
@@ -25,6 +28,10 @@ function App() {
 { isAuthenticated &&      <Header/>}
       <Routes>
         <Route path='/' element={ isAuthenticated ? <Home/> : <Login/>} />
+        <Route path='/account' element={ isAuthenticated ? <Account/> : <Login/>} />
+        <Route path='/register' element={ isAuthenticated ? <Account/> : <Register/>} />
+        <Route path='/newpost' element={ isAuthenticated ? <Newpost/> : <Login/>} />
+
       </Routes>
     </Router>
     </>

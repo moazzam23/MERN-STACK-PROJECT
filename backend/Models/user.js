@@ -14,7 +14,7 @@ const userschema = new mongoose.Schema({
     unique: [true, " Email Alreay Exist"],
   },
   profilepic: {
-    publicid: String,
+    public_id: String,
     url: String,
   },
   password: {

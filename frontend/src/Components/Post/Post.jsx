@@ -7,9 +7,10 @@ import {useDispatch, useSelector} from "react-redux";
 import { Avatar, Button, Typography,Dialog } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { grey } from '@mui/material/colors'
-import { Getcommnetpost, getlikeanddislikepost } from '../../Actions/Post';
-import { postoffollowinguser } from '../../Actions/User';
+import { DeletePost, Getcommnetpost, UpdatePost, getlikeanddislikepost } from '../../Actions/Post';
+import { GetMyposts, LoadUser, postoffollowinguser } from '../../Actions/User';
 import User from '../User/User';
+import CommentCard from '../CommentCard/CommentCard';
 
 
 const Post = ({
@@ -21,6 +22,8 @@ const Post = ({
     const [likeuser,setLikeuser]=useState(false);
     const [commentuser,setCommnetuser]=useState("");
     const [commenttoogle,setCommnetoogle]=useState(false);
+    const [ captiontoggle,setCationtoggle]= useState(false)
+    const [ captionvalue,setcaptionvalue]= useState(postcaption)
 
     const {userdata}= useSelector(state=>state.user)
 
@@ -33,18 +36,37 @@ const Post = ({
         })
     })
 
-    const commenthandler = (e)=>{
+    const commenthandler =  async(e)=>{
         e.preventDefault();
-     dispatch(Getcommnetpost(postId,commentuser))
+  await   dispatch(Getcommnetpost(postId,commentuser))
+
+     if(IsAccount){
+        dispatch(GetMyposts());
+    }else{
+  
+        dispatch(postoffollowinguser())
+    }
 
     }
 
-    const hanldlike= ()=>{
+    const deleteposthandler= async ()=>{
+       await dispatch(DeletePost(postId));
+        dispatch(GetMyposts())
+        dispatch(LoadUser());
+    }
+
+    const updatehandler=(e)=>{
+        e.preventDefault()
+        dispatch(UpdatePost(captionvalue, postId));
+        dispatch(GetMyposts())
+    }
+
+    const hanldlike= async()=>{
         setLike(!like)
-   dispatch(getlikeanddislikepost(postId));
+  await dispatch(getlikeanddislikepost(postId));
 
   if(IsAccount){
-console.log("hello")
+    dispatch(GetMyposts());
   }else{
 
       dispatch(postoffollowinguser())
@@ -54,7 +76,7 @@ console.log("hello")
   return (
     <div className='post'>
         <div className="postHeader">
-         { IsAccount?   <Button>
+         { IsAccount?   <Button onClick={()=>setCationtoggle(!captiontoggle)}>
                 <MoreVert/>
             </Button> : null}
         </div>
@@ -89,7 +111,7 @@ console.log("hello")
     <ChatBubbleOutline/>
 </Button>
 
-<Button>
+<Button onClick={deleteposthandler}>
    { IsDelete ? <DeleteOutline/> :null}
 </Button>
 
@@ -128,6 +150,43 @@ onClose={()=>setCommnetoogle(!commenttoogle)}
         required />
 
         <Button variant='contained' type='submit' >Add</Button>
+
+    </form>
+
+    {comments && comments.length > 0 ? (comments.map((user)=>(
+  <CommentCard 
+  key={user._id}
+  userId={user.user._id}
+  picture={user.user.profilepic.url}
+  name={user.user.name}
+  comment={user.comment}
+  commentId={user._id}
+  postId={postId}
+  />
+   ) )):(
+      <Typography>No Comment Yet</Typography>
+    )}
+
+
+</div>
+</Dialog>
+
+
+
+<Dialog
+open={captiontoggle}
+onClose={()=>setCationtoggle(!captiontoggle)}
+>
+<div className='DialogBox'>
+    <Typography> Update Caption</Typography>
+
+    <form className='commentForm' onSubmit={updatehandler}>
+        <input type="text" value={captionvalue} 
+        onChange={(e)=>setcaptionvalue( e.target.value)} 
+        placeholder='Caption here' 
+        required />
+
+        <Button variant='contained' type='submit' >Update</Button>
 
     </form>
 </div>
