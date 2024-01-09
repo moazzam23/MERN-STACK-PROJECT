@@ -130,3 +130,25 @@ export const DeletePost= (id)=>async(dispatch)=>{
         })
     }
 }
+
+export const UpdateProfile= (name,email,profilepic)=>async(dispatch)=>{
+    try {
+        dispatch({
+            type:"UpdateProfileRequest",
+        })
+    
+        const {data}= await axios.put("/api/v1/update_profile",{name,email,profilepic},{headers:{
+            "Content-Type":"applicaton/json"
+        }})
+        dispatch({
+            type:"UpdateProfileSuccess",
+            payload:data.message,
+        })
+        
+    } catch (error) {
+        dispatch({
+            type:"UpdateProfileFailure",
+            payload:error.response.data.message,
+        })
+    }
+}

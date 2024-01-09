@@ -22,6 +22,9 @@ const DeletepostFailure='DeletepostFailure';
 const NewpostRequest='NewpostRequest';
 const NewpostSuccess='NewpostSuccess';
 const NewpostFailure='NewpostFailure';
+const UpdateProfileRequest='UpdateProfileRequest';
+const UpdateProfileSuccess='UpdateProfileSuccess';
+const UpdateProfileFailure='UpdateProfileFailure';
 const  ClearError='ClearError';
 const ClearMessage='ClearMessage';
 
@@ -113,6 +116,20 @@ export const LikeanddislikeReducer= createReducer(initialState,(builder)=>{
                 state.loading=false;
                 state.error=action.payload;
             })
+            .addCase(
+                UpdateProfileRequest,(state)=>{
+                    state.loading=true
+                }  )
+                .addCase(
+                    UpdateProfileSuccess,(state,action)=>{
+                        state.loading=false;
+                        state.message=action.payload;
+                    })
+                    .addCase(
+                    UpdateProfileFailure,(state,action)=>{
+                        state.loading=false;
+                        state.error=action.payload;
+                    })
         .addCase(
         ClearError,(state)=>{
 state.error=null;

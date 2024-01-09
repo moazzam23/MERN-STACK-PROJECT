@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {Link} from "react-router-dom"
 import {Typography, Button, Avatar} from "@mui/material"
 import "./Register.css"
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { Registeruser } from '../../Actions/User'
 import {useAlert} from "react-alert"
 const Register = () => {
@@ -13,7 +13,7 @@ const Register = () => {
     const[name, setName]= useState("");
 
     const alert= useAlert();
-    const{loading , error}= ((state)=>state.user)
+    const{loading , error}= useSelector((state)=>state.user)
     const dispatch=useDispatch();
 
     useEffect(()=>{

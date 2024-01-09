@@ -203,13 +203,21 @@ exports.updateprofile = async (req,res)=>{
         
         const usernew = await usermodel.findById(req.user._id);
 
-        const{name,email}=  req.body;
+        const{name,email,profilepic}=  req.body;
 
         if(name){
             usernew.name=name;
         }
         if(email){
             usernew.email=email;
+        }
+        if(profilepic){
+
+            await cloudinary.v2.uploader.destroy(usernew.profilepic.public_id);
+
+            const cloud = await cloudinary.v2.uploader.upload(profilepic,{folder:"userpic"})
+            usernew.profilepic.public_id=cloud.public_id,
+            usernew.profilepic.url= cloud.secure_url
         }
 await usernew.save();
         res.status(200).json({

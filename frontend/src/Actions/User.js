@@ -138,7 +138,7 @@ export const Logoutuser=()=> async(dispatch)=>{
     } catch (error) {
         dispatch({
             type:"Logoutuserfailure",
-            payload:error,
+            payload: error.response.data.message,
         })
         
     }
