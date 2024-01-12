@@ -8,8 +8,11 @@ import { LoadUser } from './Actions/User';
 import Home from './Components/Home/Home';
 import Account from './Components/Acounts/Account';
 import Newpost from './Components/Newpost/Newpost';
+import Resetpassword from "./Components/ResetPassword/Resetpassword"
 import Register from './Components/Register/Register';
+import Updatepassword from './Components/Updatepassword/Updatepassword';
 import Updateprofile from './Components/Updateprofile/Updateprofile';
+import Forgotpassword from './Components/Forgotpassword/Forgotpassword';
 
 
 function App() {
@@ -32,7 +35,10 @@ function App() {
         <Route path='/account' element={ isAuthenticated ? <Account/> : <Login/>} />
         <Route path='/register' element={ isAuthenticated ? <Account/> : <Register/>} />
         <Route path='/update/profile' element={ isAuthenticated ? <Updateprofile/> : <Login/>} />
+        <Route path='/update/password' element={ isAuthenticated ? <Updatepassword/> : <Login/>} />
         <Route path='/newpost' element={ isAuthenticated ? <Newpost/> : <Login/>} />
+        <Route path='//password/reset/:token' element={ isAuthenticated ? <Forgotpassword/> : <Resetpassword/>} />
+        <Route path='/forgot/password' element={ isAuthenticated ? <Updatepassword/> : <Forgotpassword/>} />
 
       </Routes>
     </Router>

@@ -13,7 +13,7 @@ const Register = () => {
     const[name, setName]= useState("");
 
     const alert= useAlert();
-    const{loading , error}= useSelector((state)=>state.user)
+    const{ error}= useSelector((state)=>state.user)
     const dispatch=useDispatch();
 
     useEffect(()=>{
@@ -54,7 +54,7 @@ const Register = () => {
             <input type="email" value={email} className='registerInputs' onChange={(e)=>setEmail(e.target.value)} placeholder='Enter your Email' required />
 
             <input type="password" className='registerInputs' autoComplete='true' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter Your Paasword' required />
-            <Button disabled={loading} type='submit'>
+            <Button type='submit'>
                 Register
             </Button>
             <Link to={"/"} >

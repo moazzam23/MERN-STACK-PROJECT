@@ -138,7 +138,7 @@ export const UpdateProfile= (name,email,profilepic)=>async(dispatch)=>{
         })
     
         const {data}= await axios.put("/api/v1/update_profile",{name,email,profilepic},{headers:{
-            "Content-Type":"applicaton/json"
+            "Content-Type":'application/json',
         }})
         dispatch({
             type:"UpdateProfileSuccess",

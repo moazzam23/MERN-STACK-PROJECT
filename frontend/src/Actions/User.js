@@ -168,3 +168,90 @@ export const Logoutuser=()=> async(dispatch)=>{
             
         }
         }    
+
+        export const UpdatePassword= (oldpassword,newpassword)=>async(dispatch)=>{
+            try {
+                dispatch({
+                    type:"UpdatePasswordRequest",
+                })
+            
+                const {data}= await axios.put("/api/v1/update_password",{oldpassword,newpassword},{headers:{
+                    "Content-Type":'application/json',
+                }})
+                dispatch({
+                    type:"UpdatePasswordSuccess",
+                    payload:data.message,
+                })
+                
+            } catch (error) {
+                dispatch({
+                    type:"UpdatePasswordFailure",
+                    payload:error.response.data.message,
+                })
+            }
+        }
+
+        export const DeleteProfile= ()=>async(dispatch)=>{
+            try {
+                dispatch({
+                    type:"DeleteprofileRequest",
+                })
+            
+                const {data}= await axios.delete("/api/v1/delete_profile")
+                dispatch({
+                    type:"DeleteprofileSuccess",
+                    payload:data.message,
+                })
+                
+            } catch (error) {
+                dispatch({
+                    type:"DeleteprofileFailure",
+                    payload:error.response.data.message,
+                })
+            }
+        }
+
+        export const ForgotPassword= (email)=>async(dispatch)=>{
+            try {
+                dispatch({
+                    type:"ForgotPasswordRequest",
+                })
+            
+                const {data}= await axios.post("/api/v1/forgot_password",{email},{headers:{
+                    "Content-Type": "application/json"
+                }})
+                dispatch({
+                    type:"ForgotPasswordSuccess",
+                    payload:data.message,
+                })
+                
+            } catch (error) {
+                dispatch({
+                    type:"ForgotPasswordFailure",
+                    payload:error.response.data.message,
+                })
+            }
+        }
+
+
+        export const ResetPassword= (token,password)=>async(dispatch)=>{
+            try {
+                dispatch({
+                    type:"ResetPasswordRequest",
+                })
+            
+                const {data}= await axios.put(`/api/v1/password/reset/${token}`,{password},{headers:{
+                    "Content-Type": "application/json"
+                }})
+                dispatch({
+                    type:"ResetPasswordSuccess",
+                    payload:data.message,
+                })
+                
+            } catch (error) {
+                dispatch({
+                    type:"ResetPasswordFailure",
+                    payload:error.response.data.message,
+                })
+            }
+        }

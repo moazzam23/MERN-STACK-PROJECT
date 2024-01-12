@@ -10,10 +10,10 @@ const Updateprofile = () => {
 
     const{loading ,userdata, error}= useSelector((state)=>state.user)
    const {loading:updateloading,error:updateerror,message}= useSelector((state)=>state.Likepost)
-    const[email, setEmail]= useState(userdata.email);
+    const[email, setEmail]= useState(userdata?.email);
     const[profilepic, setProfilepic]= useState("");
-    const[profilepicprev, setProfilepicprev]= useState(userdata.profilepic.url);
-    const[name, setName]= useState(userdata.name);
+    const[profilepicprev, setProfilepicprev]= useState(userdata?.profilepic.url);
+    const[name, setName]= useState(userdata?.name);
 
     const alert= useAlert();
     const dispatch=useDispatch();

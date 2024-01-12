@@ -19,12 +19,24 @@ const MypostsFailure='MypostsFailure';
 const DeletepostRequest='DeletepostRequest';
 const DeletepostSuccess='DeletepostSuccess';
 const DeletepostFailure='DeletepostFailure';
+const DeleteprofileRequest='DeleteprofileRequest';
+const DeleteprofileSuccess='DeleteprofileSuccess';
+const DeleteprofileFailure='DeleteprofileFailure';
 const NewpostRequest='NewpostRequest';
 const NewpostSuccess='NewpostSuccess';
 const NewpostFailure='NewpostFailure';
+const ForgotPasswordRequest='ForgotPasswordRequest';
+const ForgotPasswordSuccess='ForgotPasswordSuccess';
+const ForgotPasswordFailure='ForgotPasswordFailure';
+const ResetPasswordRequest='ResetPasswordRequest';
+const ResetPasswordSuccess='ResetPasswordSuccess';
+const ResetPasswordFailure='ResetPasswordFailure';
 const UpdateProfileRequest='UpdateProfileRequest';
 const UpdateProfileSuccess='UpdateProfileSuccess';
 const UpdateProfileFailure='UpdateProfileFailure';
+const UpdatePasswordRequest='UpdatePasswordRequest';
+const UpdatePasswordSuccess='UpdatePasswordSuccess';
+const UpdatePasswordFailure='UpdatePasswordFailure';
 const  ClearError='ClearError';
 const ClearMessage='ClearMessage';
 
@@ -116,6 +128,48 @@ export const LikeanddislikeReducer= createReducer(initialState,(builder)=>{
                 state.loading=false;
                 state.error=action.payload;
             })
+        .addCase(
+            ForgotPasswordRequest,(state)=>{
+                state.loading=true;
+            })
+            .addCase(
+            ForgotPasswordSuccess,(state,action)=>{
+                state.loading=false;
+                state.message=action.payload;
+            })
+            .addCase(
+            ForgotPasswordFailure,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload;
+            })
+        .addCase(
+            ResetPasswordRequest,(state)=>{
+                state.loading=true;
+            })
+            .addCase(
+            ResetPasswordSuccess,(state,action)=>{
+                state.loading=false;
+                state.message=action.payload;
+            })
+            .addCase(
+            ResetPasswordFailure,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload;
+            })
+        .addCase(
+            DeleteprofileRequest,(state)=>{
+                state.loading=true;
+            })
+            .addCase(
+            DeleteprofileSuccess,(state,action)=>{
+                state.loading=false;
+                state.message=action.payload;
+            })
+            .addCase(
+            DeleteprofileFailure,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload;
+            })
             .addCase(
                 UpdateProfileRequest,(state)=>{
                     state.loading=true
@@ -127,6 +181,20 @@ export const LikeanddislikeReducer= createReducer(initialState,(builder)=>{
                     })
                     .addCase(
                     UpdateProfileFailure,(state,action)=>{
+                        state.loading=false;
+                        state.error=action.payload;
+                    })
+            .addCase(
+                UpdatePasswordRequest,(state)=>{
+                    state.loading=true
+                }  )
+                .addCase(
+                    UpdatePasswordSuccess,(state,action)=>{
+                        state.loading=false;
+                        state.message=action.payload;
+                    })
+                    .addCase(
+                    UpdatePasswordFailure,(state,action)=>{
                         state.loading=false;
                         state.error=action.payload;
                     })

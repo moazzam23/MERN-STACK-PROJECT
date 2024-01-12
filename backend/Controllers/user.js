@@ -37,7 +37,6 @@ exports.register= async (req,res)=>{
             token,
         })        
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             success:false,
             message:error.message,
@@ -242,7 +241,7 @@ exports.deleteuser = async(req,res)=>{
         const followings= userd.following;
         const userid = userd._id;
 
-
+        await cloudinary.v2.uploader.destroy(userd.profilepic.public_id)
 
         await userd.deleteOne();
 
@@ -251,6 +250,7 @@ exports.deleteuser = async(req,res)=>{
 
         for (let index = 0; index < post.length; index++){
             const postd = await Post.findById(post[index]);
+            await cloudinary.v2.uploader.destroy(postd.image.public_id)
            await postd.deleteOne();   
         }
         for (let index = 0; index < followers.length; index++){
@@ -362,7 +362,7 @@ const ResetPassword= user.getResetPasswordToken();
 
 await user.save();
 
-const reseturl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${ResetPassword}`
+const reseturl = `${req.protocol}://${req.get("host")}/password/reset/${ResetPassword}`
 
 const message = `You can reset your password by clicking on this link: \n\n ${reseturl}`;
 
@@ -373,13 +373,14 @@ try {
         subject: "Reset Password",
         message
     })
+    
     res.status(200).json({
         success:true,
         message:`Email Send to ${user.email}`,
     })
 
 } catch (error) {
-    
+    console.log(error)
     user.resetpasswordtoken=undefined;
     user.resetpasswordexpire=undefined;
     await user.save();
@@ -390,6 +391,7 @@ try {
 }
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success:false,
             message:error.message,

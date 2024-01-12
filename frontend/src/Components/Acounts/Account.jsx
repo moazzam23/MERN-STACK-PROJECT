@@ -1,22 +1,21 @@
 import React , {useEffect, useState} from 'react'
 import "./Account.css"
 import {useDispatch, useSelector} from "react-redux"
-import { GetMyposts, Logoutuser } from '../../Actions/User';
+import { DeleteProfile, GetMyposts, Loginuser, Logoutuser } from '../../Actions/User';
 import Loader from "../Loader/Loader"
 import { useAlert } from 'react-alert';
 import Post from '../Post/Post';
 import { Avatar, Button, Dialog, Typography } from '@mui/material';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import User from '../User/User';
 
 
 const Account = () => {
  const {userdata,loading:userloading}= useSelector((state)=>state.user)
     const { loading, error, posts} = useSelector((state)=>state.Mypost)
-    const {error:likeerror,message}= useSelector((state)=>state.Likepost)
-    // console.log("postdata",posts)
+    const {error:likeerror,message, loading:deleteloading}= useSelector((state)=>state.Likepost)
+    
 const alert=useAlert();
-const navigate = useNavigate()
     const dispatch = useDispatch();
     const [ followers,SetFollowers]= useState(false)
     const [ followering,SetFollowering]= useState(false)
@@ -26,7 +25,12 @@ const navigate = useNavigate()
         e.preventDefault();
           dispatch(Logoutuser());
          alert.success("logout successfully")
-         navigate("/")
+         dispatch(Loginuser())
+    }
+
+    const deleteprofilehandler=()=>{
+        dispatch(DeleteProfile())
+        dispatch(Logoutuser());
     }
 
     useEffect(() => {
@@ -101,7 +105,10 @@ const navigate = useNavigate()
 <Link to={"/update/profile"}> Edit Profile</Link>
 <Link to={"/update/password"}> Change Password</Link>
 
-<Button style={{backgroundColor:"red", color:"white"}} >
+<Button style={{backgroundColor:"red", color:"white"}}  
+onClick={deleteprofilehandler} 
+disabled={deleteloading}
+>
     Delete Profile
 </Button>
             </div>
