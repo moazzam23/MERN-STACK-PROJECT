@@ -18,7 +18,10 @@ const postoffollowingFailure = 'postoffollowingFailure';
 const AlluserRequest = 'AlluserRequest';
 const AlluserSuccess = 'AlluserSuccess';
 const AlluserFailure = 'AlluserFailure';
-const clearerror="clearerror";
+const UserprofileRequest = 'UserprofileRequest';
+const UserprofileSuccess = 'UserprofileSuccess';
+const UserprofileFailure = 'UserprofileFailure';
+const ClearError="ClearError";
 
 
 const initialState = {
@@ -92,7 +95,7 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.isAuthenticated=true;
     })
     .addCase(
-      clearerror, (state)=>{
+      ClearError, (state)=>{
         state.error=null;
   
       }
@@ -122,7 +125,7 @@ export const PostOfFollowingpostreducer= createReducer(initialState,(builder)=>{
     }
   )
   builder.addCase(
-    clearerror, (state)=>{
+    ClearError, (state)=>{
       state.error=null;
 
     }
@@ -152,9 +155,38 @@ export const Alluserreducer= createReducer(initialState,(builder)=>{
     }
   )
   builder.addCase(
-    clearerror, (state)=>{
+    ClearError, (state)=>{
       state.error=null;
 
     }
   )
 }) 
+
+export const Userprofilereducer= createReducer(initialState,(builder)=>{
+  builder.addCase(
+    UserprofileRequest, (state)=>{
+      state.loading=true;
+    }
+  )
+  builder.addCase(
+    UserprofileSuccess, (state,action)=>{
+      state.loading=false;
+      state.userdata=action.payload;
+      state.isAuthenticated=true;
+    }
+  )
+  builder.addCase(
+    UserprofileFailure, (state,action)=>{
+      state.loading=false;
+      state.error=action.payload;
+      state.isAuthenticated=false;
+
+    }
+  )
+  builder.addCase(
+    ClearError, (state)=>{
+      state.error=null;
+
+    }
+  )
+})

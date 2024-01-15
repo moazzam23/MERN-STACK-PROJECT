@@ -19,11 +19,11 @@ const { error ,loading,message} =useSelector((state=>state.Likepost))
   useEffect(() => {
     if(error){
       alert.error(error)
-      dispatch({type:"clearerror"})
+      dispatch({type:"ClearError"})
   }
   if(message){
       alert.success(message)
-      dispatch({type:"clearmessage"})
+      dispatch({type:"ClearMessage"})
   }
   }, [error,message,dispatch,alert])
   

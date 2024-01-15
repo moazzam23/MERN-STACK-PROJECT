@@ -106,7 +106,6 @@ exports.logout = async (req,res)=>{
     }
 }
 
-
 exports.followuser= async (req,res)=>{
     try {
    
@@ -114,7 +113,7 @@ exports.followuser= async (req,res)=>{
         const logginuser = await usermodel.findById(req.user._id)
 
         if(!usertofollow){
-return res.status(500).json({
+return res.status(404).json({
     success:false,
     message:"User Not Found"
 })
@@ -122,24 +121,24 @@ return res.status(500).json({
         
         if(logginuser.following.includes(usertofollow._id)){
             const indexfollowing = logginuser.following.indexOf(usertofollow._id);
-            logginuser.following.splice(indexfollowing,1);
-            
-            
+  
             const indexfollower = usertofollow.followers.indexOf(logginuser._id);
+
+            logginuser.following.splice(indexfollowing,1);
             usertofollow.followers.splice(indexfollower,1);
+
             await logginuser.save();
             await usertofollow.save();
+
             res.status(200).json({
                 success:true,
                 message:"User unFollowed"
                })
         }
-
         else{
 
             logginuser.following.push(usertofollow._id);
             usertofollow.followers.push(logginuser._id);
-           
            
             await logginuser.save();
            await usertofollow.save();
@@ -270,6 +269,34 @@ exports.deleteuser = async(req,res)=>{
             await follows.save();
            
         }
+
+
+        const allpost= await Post.find();
+        for (let index = 0; index < allpost.length; index++){
+            const postcomment = await Post.findById(allpost[index]._id);
+
+            for (let j = 0; j < postcomment.comments.length; j++) {
+                if(postcomment.comments[j].user === userid){
+                    postcomment.comments.splice(j,1)
+                }
+                
+            }
+       await postcomment.save();
+        }
+
+
+        //likes
+        for (let index = 0; index < allpost.length; index++){
+            const postlike = await Post.findById(allpost[index]._id);
+
+            for (let j = 0; j < postlike.likes.length; j++) {
+                if(postlike.likes[j] === userid){
+                    postlike.likes.splice(j,1)
+                }
+                
+            }
+       await postlike.save();
+        }
         
         res.status(200).json({
             success:true,
@@ -307,7 +334,7 @@ exports.myprofile = async (req,res)=>{
 exports.getuserprofile=async (req, res)=>{
     try {
 
-        const userdata = await usermodel.findById(req.user._id).populate("posts followers following");
+        const userdata = await usermodel.findById(req.params.id).populate("posts followers following");
         
 
         if (!userdata) {
@@ -332,7 +359,7 @@ exports.getuserprofile=async (req, res)=>{
 exports.getalluser=async (req, res)=>{
     try {
 
-        const userdata = await usermodel.find({})
+        const userdata = await usermodel.find({name:{ $regex : req.query.name, $options:"i"}})
         
         res.status(200).json({
             success:true,
@@ -440,6 +467,32 @@ exports.myposts=async (req, res)=>{
     try {
 
         const user = await usermodel.findById(req.user._id);
+        const posts=[];
+
+        for (let i = 0; i < user.posts.length; i++) {
+            const post = await Post.findById(user.posts[i]).populate("likes comments.user users");
+
+            posts.push(post)
+
+            
+        }
+        
+        res.status(200).json({
+            success:true,
+            posts,
+        })
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:error.message,
+        })
+    }
+}
+
+exports.myuserposts=async (req, res)=>{
+    try {
+
+        const user = await usermodel.findById(req.params.id);
         const posts=[];
 
         for (let i = 0; i < user.posts.length; i++) {

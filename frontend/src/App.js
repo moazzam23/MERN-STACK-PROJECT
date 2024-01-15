@@ -13,6 +13,9 @@ import Register from './Components/Register/Register';
 import Updatepassword from './Components/Updatepassword/Updatepassword';
 import Updateprofile from './Components/Updateprofile/Updateprofile';
 import Forgotpassword from './Components/Forgotpassword/Forgotpassword';
+import Userprofile from './Components/Userprofile/Userprofile';
+import Search from './Components/Search/Search';
+import Notfound from "./Components/NotFound/Notfound";
 
 
 function App() {
@@ -37,8 +40,11 @@ function App() {
         <Route path='/update/profile' element={ isAuthenticated ? <Updateprofile/> : <Login/>} />
         <Route path='/update/password' element={ isAuthenticated ? <Updatepassword/> : <Login/>} />
         <Route path='/newpost' element={ isAuthenticated ? <Newpost/> : <Login/>} />
-        <Route path='//password/reset/:token' element={ isAuthenticated ? <Forgotpassword/> : <Resetpassword/>} />
-        <Route path='/forgot/password' element={ isAuthenticated ? <Updatepassword/> : <Forgotpassword/>} />
+        <Route path='/password/reset/:token' element={ isAuthenticated ? <Forgotpassword/> : <Resetpassword/>} />
+        <Route path='/user/:id' element={ isAuthenticated ? <Userprofile/> : <Login/>} />
+        <Route path='/search' element={ isAuthenticated ? <Search/> : <Login/>} />
+        <Route path='/forgot/password' element={  <Updatepassword/>} />
+        <Route path='*' element={  <Notfound/>} />
 
       </Routes>
     </Router>

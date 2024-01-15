@@ -25,7 +25,7 @@ const Updateprofile = () => {
     }
       if(updateerror){
         alert.error(updateerror)
-        dispatch({type:"clearerror"})
+        dispatch({type:"ClearError"})
     }
       if(message){
         alert.success(message)

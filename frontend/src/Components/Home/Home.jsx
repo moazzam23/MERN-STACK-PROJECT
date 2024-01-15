@@ -26,15 +26,15 @@ const Home = () => {
 useEffect(()=>{
     if(error){
         alert.error(error)
-        dispatch({type:"clearerror"})
+        dispatch({type:"ClearError"})
     }
     if(likeerror){
         alert.error(likeerror)
-        dispatch({type:"clearerror"})
+        dispatch({type:"ClearError"})
     }
     if(message){
         alert.success(message)
-        dispatch({type:"clearmessage"})
+        dispatch({type:"ClearMessage"})
     }
 },[alert,message,likeerror,error,dispatch])
 

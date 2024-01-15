@@ -237,7 +237,7 @@ exports.createcomment= async (req,res)=>{
 exports.deletecomment = async (req,res)=>{
     try {
 
-        const posts = await post.findById(req.params._id);
+        const posts = await post.findById(req.params.id);
 
         if(!posts){
             return res.status(404).json({
@@ -249,7 +249,7 @@ exports.deletecomment = async (req,res)=>{
 
         if (posts.users.toString()== req.user._id.toString()) {
 
- if(req.body.commentid == undefined){
+ if(req.body.commentId === undefined){
     return res.status(400).json({
         success:false,
         message: "Comment Id is Required"
@@ -257,7 +257,7 @@ exports.deletecomment = async (req,res)=>{
  }
 
             posts.comments.forEach((item,index)=>{
-                if (item._id.toString()== req.body.commentid.toString()) {
+                if (item._id.toString()== req.body.commentId.toString()) {
 return posts.comments.splice(index,1)
                 }
             })

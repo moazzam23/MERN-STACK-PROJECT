@@ -97,7 +97,7 @@ try {
 }
 }
 
-export const Alluser=()=>async(dispatch)=>{
+export const Alluser=(name="")=>async(dispatch)=>{
     try {
     
     
@@ -106,7 +106,7 @@ export const Alluser=()=>async(dispatch)=>{
     
         })
     
-        const {data}= await axios.get("/api/v1/users")
+        const {data}= await axios.get(`/api/v1/users?name=${name}`)
     
         dispatch({
             type:"AlluserSuccess",
@@ -255,3 +255,76 @@ export const Logoutuser=()=> async(dispatch)=>{
                 })
             }
         }
+
+        export const GetUserposts=(id)=>async(dispatch)=>{
+            try {
+            
+            
+                dispatch({
+                    type:"UserpostRequest",
+            
+                })
+            
+                const {data}= await axios.get(`/api/v1/userpost/${id}`)
+            
+                dispatch({
+                    type:"UserpostSuccess",
+                    payload:data.posts,
+                })
+            
+                
+            } catch (error) {
+                dispatch({
+                    type:"UserpostFaliure",
+                    payload:error.response.data.message,
+                })
+            }
+            }
+
+            export const GetUserprofile=(id)=>async(dispatch)=>{
+                try {
+                
+                
+                    dispatch({
+                        type:"UserprofileRequest",
+                
+                    })
+                
+                    const {data}= await axios.get(`/api/v1/users/${id}`)
+                
+                    dispatch({
+                        type:"UserprofileSuccess",
+                        payload:data.userdata,
+                    })
+                
+                    
+                } catch (error) {
+                    dispatch({
+                        type:"UserprofileFaliure",
+                        payload:error.response.data.message,
+                    })
+                }
+                }
+
+                export const Followuser=(id)=>async(dispatch)=>{
+                    try {
+                             dispatch({
+                            type:"FollowuserRequest",
+                    
+                        })
+                    
+                        const {data}= await axios.get(`/api/v1/follow/${id}`)
+                    
+                        dispatch({
+                            type:"FollowuserSuccess",
+                            payload:data.message,
+                        })
+                    
+                        
+                    } catch (error) {
+                        dispatch({
+                            type:"FollowuserFaliure",
+                            payload:error.response.data.message,
+                        })
+                    }
+                    }

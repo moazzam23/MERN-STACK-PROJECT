@@ -18,7 +18,7 @@ const Updatepassword = () => {
   useEffect(()=>{
     if(error){
       alert.error(error)
-      dispatch({type:"clearerror"})
+      dispatch({type:"ClearError"})
   }
    
     if(message){

@@ -42,13 +42,13 @@ export const Getcommnetpost= (id,comment)=>async(dispatch)=>{
     }
 }
 
-export const deletecommnetpost= (id,commentID)=>async(dispatch)=>{
+export const deletecommnetpost= (id,commentId)=>async(dispatch)=>{
     try {
         dispatch({
             type:"deleteCommentRequest",
         })
     
-        const {data}= await axios.delete(`/api/v1/posts/comment/${id}`,{data:commentID})
+        const {data}= await axios.delete(`/api/v1/posts/comment/${id}`,{data:{commentId}});
         dispatch({
             type:"deleteCommentSuccess",
             payload:data.message,

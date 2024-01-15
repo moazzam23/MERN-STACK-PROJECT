@@ -25,12 +25,18 @@ const DeleteprofileFailure='DeleteprofileFailure';
 const NewpostRequest='NewpostRequest';
 const NewpostSuccess='NewpostSuccess';
 const NewpostFailure='NewpostFailure';
+const UserpostRequest='UserpostRequest';
+const UserpostSuccess='UserpostSuccess';
+const UserpostFailure='UserpostFailure';
 const ForgotPasswordRequest='ForgotPasswordRequest';
 const ForgotPasswordSuccess='ForgotPasswordSuccess';
 const ForgotPasswordFailure='ForgotPasswordFailure';
 const ResetPasswordRequest='ResetPasswordRequest';
 const ResetPasswordSuccess='ResetPasswordSuccess';
 const ResetPasswordFailure='ResetPasswordFailure';
+const FollowuserRequest='FollowuserRequest';
+const FollowuserSuccess='FollowuserSuccess';
+const FollowuserFailure='FollowuserFailure';
 const UpdateProfileRequest='UpdateProfileRequest';
 const UpdateProfileSuccess='UpdateProfileSuccess';
 const UpdateProfileFailure='UpdateProfileFailure';
@@ -157,6 +163,20 @@ export const LikeanddislikeReducer= createReducer(initialState,(builder)=>{
                 state.error=action.payload;
             })
         .addCase(
+            FollowuserRequest,(state)=>{
+                state.loading=true;
+            })
+            .addCase(
+            FollowuserSuccess,(state,action)=>{
+                state.loading=false;
+                state.message=action.payload;
+            })
+            .addCase(
+            FollowuserFailure,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload;
+            })
+        .addCase(
             DeleteprofileRequest,(state)=>{
                 state.loading=true;
             })
@@ -233,6 +253,25 @@ export const MyspostReducer = createReducer(initialState,(builder)=>{
     )
     })
 
-    export const newpost=createReducer(initialState,(builder)=>{
-        
-    })
+    export const UserpostReducer = createReducer(initialState,(builder)=>{
+
+        builder.addCase(
+            UserpostRequest,(state)=>{
+                state.loading=true;
+            })
+            .addCase(
+                UserpostSuccess,(state,action)=>{
+                state.loading=false;
+                state.posts=action.payload;
+            })
+            .addCase(
+                UserpostFailure,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload;
+            })
+        .addCase(
+            ClearError,(state)=>{
+                state.error=null;
+            }
+        )
+        })
